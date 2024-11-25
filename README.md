@@ -1,2 +1,8 @@
-# lite-cache
-Simple caching proxy server CLI tool
+```
+npm install
+npm run dev
+```
+
+```
+open http://localhost:3000
+```
