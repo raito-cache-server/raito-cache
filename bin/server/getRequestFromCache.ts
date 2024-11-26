@@ -2,7 +2,7 @@ import { Context, Next } from 'hono';
 import { cacheStore } from '../cache/cacheStore';
 
 export const getRequestFromCache = async (c: Context, next: Next) => {
-  const key = c.req.routePath;
+  const key = c.req.path;
 
   const setCacheHeader = (status: 'HIT' | 'MISS') => {
     c.res.headers.set('X-Cache', status);
@@ -20,7 +20,7 @@ export const getRequestFromCache = async (c: Context, next: Next) => {
     console.log(`MISS: ${key}`);
     await next();
   } catch (e) {
-    console.error(`ERROR: ${(e as Error).message}`);
+    console.error(e);
     setCacheHeader('MISS');
     await next();
   }
