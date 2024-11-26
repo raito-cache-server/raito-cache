@@ -1,8 +1,9 @@
 import { Context, Next } from 'hono';
 import { cacheStore } from '../cache';
+import { getKey } from '../utils/getKey';
 
 export const getRequestFromCache = async (c: Context, next: Next) => {
-  const key = c.req.path;
+  const key = getKey(c);
 
   const setCacheHeader = (status: 'HIT' | 'MISS') => {
     c.res.headers.set('X-Cache', status);
