@@ -1,5 +1,5 @@
 import { Context, Next } from 'hono';
-import { cacheStore } from '../cache/cacheStore';
+import { cacheStore } from '../cache';
 
 export const getRequestFromCache = async (c: Context, next: Next) => {
   const key = c.req.path;
