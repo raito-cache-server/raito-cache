@@ -1927,6 +1927,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^12.1.0":
+  version: 12.1.0
+  resolution: "commander@npm:12.1.0"
+  checksum: 10c0/6e1996680c083b3b897bfc1cfe1c58dfbcd9842fd43e1aaf8a795fbc237f65efcc860a3ef457b318e73f29a4f4a28f6403c3d653d021d960e4632dd45bde54a9
+  languageName: node
+  linkType: hard
+
 "compare-func@npm:^2.0.0":
   version: 2.0.0
   resolution: "compare-func@npm:2.0.0"
@@ -4454,6 +4461,7 @@ __metadata:
     "@types/node": "npm:^22.9.3"
     "@typescript-eslint/eslint-plugin": "npm:^8.16.0"
     "@typescript-eslint/parser": "npm:^8.16.0"
+    commander: "npm:^12.1.0"
     eslint: "npm:^8.57.0"
     globals: "npm:^15.12.0"
     hono: "npm:^4.6.12"
