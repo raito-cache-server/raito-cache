@@ -1,4 +1,5 @@
 import { Cache, cacheStore } from '../bin/cache';
+import { ICache } from '../bin/types';
 
 describe('Cache', () => {
   it('should create a Cache instance with the correct key and data', () => {
@@ -18,7 +19,7 @@ describe('CacheStore', () => {
     const cache = new Cache('key1', { name: 'test' });
     cacheStore.set(cache);
 
-    const cachedData = cacheStore.get('key1');
+    const cachedData = cacheStore.get('key1') as ICache;
     expect(cachedData).toBeDefined();
     expect(cachedData?.key).toBe('key1');
     expect(cachedData?.data).toBe(JSON.stringify({ name: 'test' }));
