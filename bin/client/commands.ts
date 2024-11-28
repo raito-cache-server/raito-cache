@@ -6,6 +6,7 @@ import { ICache } from '../types';
 export type CommandData = {
   description: string;
   handler: (...args: string[]) => Promise<void> | void;
+  help?: string;
 };
 
 export const commands: Record<string, CommandData> = {
@@ -68,6 +69,14 @@ export const commands: Record<string, CommandData> = {
         console.log(`[${entries?.key}]\t${entries?.data}`);
       }
     },
+    help: `
+* \`get\` - get cache.
+  * \`get *\` - get all records
+  * \`get key\` - get cache by key
+  * \`get HTTP_METHOD\` - get all cached responses from HTTP_METHOD requests. Example: \`get POST\`
+  * \`get :ROUTE\` - get all cached responses from the specific route. Example: \`get :/tasks/2\`
+  * \`get HTTP_METHOD:ROUTE\` - get a specific cached response
+`,
   },
   set: {
     description:
@@ -79,10 +88,18 @@ export const commands: Record<string, CommandData> = {
       cacheStore.set(new Cache(key, data));
       console.log('Saved');
     },
+    help: `
+* \`set key data\` - create a new record with 'key' and 'data'`,
   },
   help: {
     description: 'Get help for a specific or all commands',
-    handler: () => {
+    handler: (command?: string) => {
+      if (command) {
+        const help = commands[command]?.help;
+        if (help) {
+          return console.log(commands[command]?.help);
+        }
+      }
       console.log('\nAvailable Commands:');
       for (const [cmd, { description }] of Object.entries(commands)) {
         console.log(`  ${cmd.padEnd(15)}\t${description}`);
