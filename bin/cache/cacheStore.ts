@@ -21,6 +21,8 @@ class CacheStore implements ICacheStore {
     }
 
     const [methodPattern, routePattern] = key.split(':');
+    if (methodPattern && routePattern) return null;
+
     const matchedItems = Array.from(this.cacheMap.entries()).filter(
       ([cacheKey]) => {
         return (
