@@ -2,6 +2,7 @@ import { options } from '../cli';
 import { Cache, cacheStore } from '../cache';
 import { server } from '../server';
 import { ICache } from '../types';
+import chalk from 'chalk';
 
 export type CommandData = {
   description: string;
@@ -14,7 +15,14 @@ export const commands: Record<string, CommandData> = {
     description: 'Check server status',
     handler: async () => {
       console.log(
-        `Server:\t${server.getStatus() ? 'running' : 'stopped'}\nHost:\t${options.host}:${options.port}\nCache:\t${(cacheStore.get('*') as Map<string, ICache>).size} records`,
+        `Server:` +
+          `\t${server.getStatus() ? chalk.green('running') : chalk.red('stopped')}\n` +
+          `Host:` +
+          chalk.blueBright(`\thttp://${options.host}:${options.port}\n`) +
+          `Cache:` +
+          chalk.yellow(
+            `\t${(cacheStore.get('*') as Map<string, ICache>).size} records`,
+          ),
       );
     },
   },
@@ -22,36 +30,38 @@ export const commands: Record<string, CommandData> = {
     description: 'Stop the server',
     handler: async () => {
       server.stopServer();
-      console.log(`Stopping server...`);
+      console.log(chalk.red(`Stopping server...`));
     },
   },
   start: {
     description: 'Start the server',
     handler: async () => {
       await server.listen(options);
-      console.log(`Starting server...`);
+      console.log(chalk.green(`Starting server...`));
     },
   },
   exit: {
     description: 'Stop the server and terminate the process',
     handler: () => {
       server.stopServer();
-      console.log('Server stopped. Exiting process...');
+      console.log(chalk.red('Server stopped. Exiting process...'));
       process.exit(0);
     },
   },
   'clear-cache': {
     description: 'Delete all cached data',
-    handler: () => {
-      cacheStore.clear();
-      console.log('Cleared');
+    handler: (key?: string) => {
+      cacheStore.clear(key);
+      console.log(chalk.green('Cleared'));
     },
   },
   get: {
-    description: 'Get cache by different options. Args: <key> - cache key',
+    description: `Get cache by different options. Args: ${chalk.bold('<key>')} - cache key`,
     handler: (key: string) => {
       if (!key) {
-        return console.error(`ERROR: Missing required arguments`);
+        return console.error(
+          chalk.bold.red(`ERROR: `) + `Missing required arguments`,
+        );
       }
 
       const entries = cacheStore.get(key);
@@ -62,34 +72,44 @@ export const commands: Record<string, CommandData> = {
         );
         entries.forEach((entry) => {
           console.log(
-            `[${entry.key}]`.padEnd(maxKeyLength) + `\t${entry.data}`,
+            chalk.bold.grey(`[${entry.key}]`).padEnd(maxKeyLength) +
+              `\t${entry.data}`,
           );
         });
       } else if (entries instanceof Cache) {
-        console.log(`[${entries?.key}]\t${entries?.data}`);
+        console.log(
+          chalk.bold.grey(`[${entries?.key}]`) + `\t${entries?.data}`,
+        );
       }
     },
-    help: `
-* \`get\` - get cache.
-  * \`get *\` - get all records
-  * \`get key\` - get cache by key
-  * \`get HTTP_METHOD\` - get all cached responses from HTTP_METHOD requests. Example: \`get POST\`
-  * \`get :ROUTE\` - get all cached responses from the specific route. Example: \`get :/tasks/2\`
-  * \`get HTTP_METHOD:ROUTE\` - get a specific cached response
-`,
+    help:
+      `get`.padEnd(35) +
+      `get cache\n` +
+      `get *`.padEnd(35) +
+      `get all records\n` +
+      `get key`.padEnd(35) +
+      `get cache by ${chalk.bold(`key`)}\n` +
+      `get HTTP_METHOD`.padEnd(35) +
+      `get all cached responses from ${chalk.bold(`HTTP_METHOD`)} requests. Example: get POST\n` +
+      `get :ROUTE`.padEnd(35) +
+      `get all cached responses from the specific ${chalk.bold(`route`)}. Example: get :tasks/2\n` +
+      `get HTTP_METHOD:ROUTE`.padEnd(35) +
+      `get a specific cached response`,
   },
   set: {
-    description:
-      'Define a new cache record. Args: <key> - cache key, * - get all, <data> - cache data',
+    description: `Define a new cache record. Args: ${chalk.bold('<key>')} - cache key (* - get all), ${chalk.bold('<data>')} - cache data`,
     handler: (key: string, data: string) => {
       if (!key || !data) {
-        return console.error(`ERROR: Missing required arguments`);
+        return console.error(
+          chalk.red.bold(`ERROR: `) + `Missing required arguments`,
+        );
       }
       cacheStore.set(new Cache(key, data));
-      console.log('Saved');
+      console.log(chalk.green('Saved'));
     },
-    help: `
-* \`set key data\` - create a new record with 'key' and 'data'`,
+    help:
+      `set key data`.padEnd(35) +
+      `create a new record with ${chalk.bold("'key'")} and ${chalk.bold("'data'")}`,
   },
   help: {
     description: 'Get help for a specific or all commands',
@@ -97,12 +117,12 @@ export const commands: Record<string, CommandData> = {
       if (command) {
         const help = commands[command]?.help;
         if (help) {
-          return console.log(commands[command]?.help);
+          return console.log(help);
         }
       }
-      console.log('\nAvailable Commands:');
+      console.log('Available Commands:');
       for (const [cmd, { description }] of Object.entries(commands)) {
-        console.log(`  ${cmd.padEnd(15)}\t${description}`);
+        console.log(`${cmd.padEnd(15)}\t${description}`);
       }
     },
   },
