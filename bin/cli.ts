@@ -2,6 +2,7 @@ import { InvalidOptionArgumentError, program } from 'commander';
 import { CliOptions } from './types';
 import { client } from './client';
 import { server } from './server';
+import chalk from 'chalk';
 
 program
   .name('raito-cache')
@@ -35,7 +36,9 @@ const parseRequiredOption = (
   try {
     parseRequiredOption(options, ['port', 'origin']);
     await server.listen(options);
-    console.log(`Ratio-Cache Server started. Type "help" for commands`);
+    console.log(
+      `Ratio-Cache Server started. Type ${chalk.bold("'help'")} for commands`,
+    );
     client.handleCommand();
   } catch (e) {
     console.error((e as Error).message);

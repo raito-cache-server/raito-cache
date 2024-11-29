@@ -26,8 +26,8 @@ class CacheStore implements ICacheStore {
     const matchedItems = Array.from(this.cacheMap.entries()).filter(
       ([cacheKey]) => {
         return (
-          cacheKey.includes(routePattern) ||
-          (methodPattern !== '' && cacheKey.startsWith(methodPattern))
+          (routePattern !== '' && cacheKey.includes(routePattern)) ||
+          (methodPattern !== '' && cacheKey.split(':')[0] === methodPattern)
         );
       },
     );
@@ -38,8 +38,9 @@ class CacheStore implements ICacheStore {
     return null;
   }
 
-  public clear(): void {
-    this.cacheMap.clear();
+  public clear(key?: string): void {
+    if (key) this.cacheMap.delete(key);
+    else this.cacheMap.clear();
   }
 }
 

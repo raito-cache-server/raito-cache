@@ -8,7 +8,7 @@ const createRequestBody = async (c: Context): Promise<string | undefined> => {
   try {
     return JSON.stringify(await c.req.json());
   } catch (error) {
-    console.error('Failed to parse request body:', error);
+    console.error('Failed to parse request body: ', error);
     throw new Error('Invalid request body');
   }
 };
@@ -19,7 +19,7 @@ const forwardRequest = async (url: string, method: string, body?: string) => {
 };
 
 const handleError = (c: Context, error: unknown): Response => {
-  console.error('Proxy error:', error);
+  console.error('Proxy error: ', error);
   c.status(500);
   return c.body('Internal Server Error');
 };

@@ -1,6 +1,7 @@
 import * as readline from 'node:readline';
 import { completer } from './completer';
 import { commands } from './commands';
+import chalk from 'chalk';
 
 export class Client {
   private readonly rl: readline.Interface;
@@ -17,21 +18,23 @@ export class Client {
         try {
           await commands[command].handler(lineParts[1], lineParts[2]);
         } catch (e) {
-          console.error(`ERROR: ${(e as Error).message}`);
+          console.error(chalk.red.bold(`ERROR: `) + `${(e as Error).message}`);
         }
       } else {
-        console.log(`Unknown command. Type "help" for commands`);
+        console.log(
+          `Unknown command. Type ${chalk.bold("'help'")} for commands`,
+        );
       }
       this.rl.prompt();
     });
 
     this.rl.on('close', () => {
-      console.log(`Ratio-Cache Server terminated`);
+      console.log(chalk.yellow(`Ratio-Cache Server terminated`));
       process.exit(0);
     });
 
     this.rl.on('error', (error) => {
-      console.error(`ERROR: `, error.message);
+      console.error(chalk.red.bold(`ERROR: `) + error.message);
     });
 
     this.rl.prompt();
