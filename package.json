@@ -1,10 +1,11 @@
 {
   "name": "raito-cache",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1",
   "description": "Lite caching proxy server",
-  "main": "dist/index.js",
+  "main": "dist/bin/index.js",
   "bin": {
-    "cache-proxy": "dist/index.js"
+    "cache-proxy": "dist/bin/index.js",
+    "raito": "dist/bin/index.js"
   },
   "type": "module",
   "repository": "https://github.com/stbestichhh/raito-cache.git",
