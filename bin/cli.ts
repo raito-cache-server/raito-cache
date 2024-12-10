@@ -14,6 +14,11 @@ program
     'localhost',
   )
   .option('--origin <url>', 'define url for caching')
+  .option(
+    '--ttl <ms>',
+    'define time to live for the cache record in ms',
+    parseInt,
+  )
   .version('0.0.1', '-v, --version')
   .parse(process.argv);
 

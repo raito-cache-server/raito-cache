@@ -1,15 +1,22 @@
 import { ICache, ICacheStore } from '../types';
+import { options } from '../cli';
 
 export type CacheMap = Map<string, ICache>;
 
 class CacheStore implements ICacheStore {
+  private cachettl: number | undefined = undefined;
   private readonly cacheMap: CacheMap = new Map<string, ICache>();
 
   public set(data: ICache): void {
+    if (!data.ttl) {
+      data.setTtl(this.cachettl);
+    }
     this.cacheMap.set(data.key, data);
   }
 
   public get(key?: string): ICache | CacheMap | null {
+    this.removeExpiredEntries();
+
     if (!key) return null;
     if (key === '*') {
       return new Map(this.cacheMap);
@@ -41,6 +48,25 @@ class CacheStore implements ICacheStore {
   public clear(key?: string): void {
     if (key) this.cacheMap.delete(key);
     else this.cacheMap.clear();
+  }
+
+  private removeExpiredEntries() {
+    const now = Date.now();
+    Array.from(this.cacheMap.entries()).forEach(([key, cache]) => {
+      const createdAt = cache.createdAt.getTime();
+      const ttl = cache.ttl ?? options.ttl;
+      if (ttl > 0 && now - createdAt >= ttl) {
+        this.cacheMap.delete(key);
+      }
+    });
+  }
+
+  public ttl(value?: number) {
+    if (!value && value !== 0) {
+      return this.cachettl;
+    } else {
+      this.cachettl = value;
+    }
   }
 }
 

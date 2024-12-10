@@ -19,6 +19,8 @@ export const commands: Record<string, CommandData> = {
           `\t${server.getStatus() ? chalk.green('running') : chalk.red('stopped')}\n` +
           `Host:` +
           chalk.blueBright(`\thttp://${options.host}:${options.port}\n`) +
+          `Origin:` +
+          chalk.cyan(`\t${options.origin}\n`) +
           `Cache:` +
           chalk.yellow(
             `\t${(cacheStore.get('*') as Map<string, ICache>).size} records`,
@@ -71,14 +73,18 @@ export const commands: Record<string, CommandData> = {
           ...Array.from(entries.keys(), (k) => k.length),
         );
         entries.forEach((entry) => {
+          const ttl = entry.ttl ?? options.ttl;
+          const ttlStr = ttl ? ` ${ttl}` : '';
           console.log(
-            chalk.bold.grey(`[${entry.key}]`).padEnd(maxKeyLength) +
+            chalk.bold.grey(`[${entry.key}${ttlStr}]`).padEnd(maxKeyLength) +
               `\t${entry.data}`,
           );
         });
       } else if (entries instanceof Cache) {
+        const ttl = entries.ttl ?? options.ttl;
+        const ttlStr = ttl ? ` ${ttl}` : '';
         console.log(
-          chalk.bold.grey(`[${entries?.key}]`) + `\t${entries?.data}`,
+          chalk.bold.grey(`[${entries?.key}${ttlStr}]`) + `\t${entries?.data}`,
         );
       }
     },
@@ -96,20 +102,27 @@ export const commands: Record<string, CommandData> = {
       `get HTTP_METHOD:ROUTE`.padEnd(35) +
       `get a specific cached response`,
   },
+  ttl: {
+    description: `Define new ttl value the next records. Args: ${chalk.bold('<ms>')} - time to live in ms`,
+    handler: (key: string) => {
+      cacheStore.ttl(Number(key));
+    },
+  },
   set: {
-    description: `Define a new cache record. Args: ${chalk.bold('<key>')} - cache key (* - get all), ${chalk.bold('<data>')} - cache data`,
-    handler: (key: string, data: string) => {
+    description: `Define a new cache record. Args: ${chalk.bold('<key>')} - cache key, ${chalk.bold('<data>')} - cache data, ${chalk.bold('<ttl>')} - cache ttl (optional)`,
+    handler: (key: string, data: string, ttl?: string) => {
       if (!key || !data) {
         return console.error(
           chalk.red.bold(`ERROR: `) + `Missing required arguments`,
         );
       }
-      cacheStore.set(new Cache(key, data));
+      const cacheTtl = Number(ttl);
+      cacheStore.set(new Cache(key, data, cacheTtl));
       console.log(chalk.green('Saved'));
     },
     help:
-      `set key data`.padEnd(35) +
-      `create a new record with ${chalk.bold("'key'")} and ${chalk.bold("'data'")}`,
+      `set key data ttl`.padEnd(25) +
+      `create a new record with ${chalk.bold("'key'")}, ${chalk.bold("'data'")} and ${chalk.bold("'ttl'")}`,
   },
   help: {
     description: 'Get help for a specific or all commands',

@@ -16,7 +16,11 @@ export class Client {
       const command = lineParts[0].trim();
       if (commands[command]) {
         try {
-          await commands[command].handler(lineParts[1], lineParts[2]);
+          await commands[command].handler(
+            lineParts[1],
+            lineParts[2],
+            lineParts[3],
+          );
         } catch (e) {
           console.error(chalk.red.bold(`ERROR: `) + `${(e as Error).message}`);
         }
@@ -29,7 +33,7 @@ export class Client {
     });
 
     this.rl.on('close', () => {
-      console.log(chalk.yellow(`Ratio-Cache Server terminated`));
+      console.log(chalk.redBright(`Ratio-Cache Server terminated`));
       process.exit(0);
     });
 
