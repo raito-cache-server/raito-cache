@@ -40,6 +40,7 @@ Lite caching proxy server
 
 Options:
   --host <host>   define host on which to start the server (default: "localhost")
+  --ttl <time>    define time to live for cache in milliseconds
   -v, --version   output the version number
   -h, --help      display help for command
 ```
@@ -50,13 +51,14 @@ Options:
 * `start` - start the server
 * `exit` - stop the server and exit the process
 * `clear-cache` - deletes all records
+* `ttl ms` - time to live in milliseconds
 * `get` - get cache.
   * `get *` - get all records
   * `get key` - get cache by key
   * `get HTTP_METHOD` - get all cached responses from HTTP_METHOD requests. **Example:** `get POST`
   * `get :ROUTE` - get all cached responses from the specific route. **Example:** `get :/tasks/2`
   * `get HTTP_METHOD:ROUTE` - get a specific cached response
-* `set key data` - create a new record with **key** and **data**
+* `set key data ttl` - create a new record with **key** and **data**. **ttl** - time to live for record (optional)
 * `help` - get all commands
 
 ## Contributing
