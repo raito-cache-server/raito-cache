@@ -1,13 +1,12 @@
 {
   "name": "raito-cache",
-  "version": "0.0.1",
+  "version": "0.0.1-s.1",
   "description": "Lite caching proxy server",
   "main": "dist/bin/index.js",
   "bin": {
     "cache-proxy": "dist/bin/index.js",
     "raito": "dist/bin/index.js"
   },
-  "type": "module",
   "repository": "https://github.com/stbestichhh/raito-cache.git",
   "author": "Kiril Yakymchuk <stbestich@gmail.com>",
   "license": "MIT",
@@ -28,6 +27,7 @@
     "build": "npx tsc",
     "start": "tsx bin/index.ts",
     "start:dev": "tsx watch bin/index.ts",
+    "start:prod": "node dist/bin/index.js",
     "lint": "eslint .",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
-    "chalk": "^5.3.0",
+    "chalk": "^4.1.2",
     "commander": "^12.1.0",
     "hono": "^4.6.12"
   },

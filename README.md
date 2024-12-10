@@ -18,7 +18,7 @@
 
 ## About
 
-**raito-cache** - is lightweight caching proxy server built. This server intercepts requests, caches responses, and serves them from the cache, improving performance by reducing redundant network calls. It also includes command line interface with command handling functionality.
+**raito-cache** - is lightweight caching proxy server. This server intercepts requests, caches responses, and serves them from the cache, improving performance by reducing redundant network calls. It also includes command line interface with command handling functionality.
 
 ## Getting started
 
@@ -34,7 +34,7 @@
 
 **Start the server:**
 ```text
-Usage: raito-cache --port <port> --origin <url> [options]
+Usage: raito --port <port> --origin <url> [options]
 
 Lite caching proxy server
 
