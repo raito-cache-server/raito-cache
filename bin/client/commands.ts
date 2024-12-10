@@ -44,7 +44,7 @@ export const commands: Record<string, CommandData> = {
     description: 'Stop the server and terminate the process',
     handler: () => {
       server.stopServer();
-      console.log(chalk.red('Server stopped. Exiting process...'));
+      console.log(chalk.yellow('Server stopped. Exiting process...'));
       process.exit(0);
     },
   },

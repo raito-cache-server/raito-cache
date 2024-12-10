@@ -10,7 +10,7 @@
 * [Description](#about)
 * [Getting started](#getting-started)
   * [Installation](#installation)
-  * [Command Line Interface](#cli)  
+  * [Command Line Interface](#cli)
 * [Contributing](#contributing)
 * [Changelog](#changelog)
 * [Authors](#authors)
@@ -27,7 +27,7 @@
 
 ### Installation
   ```shell
-  $ yarn add @stlib/testing
+  $ yarn add -g raito-cache
   ```
 
 ### CLI
@@ -38,8 +38,8 @@ Usage: raito-cache --port <port> --origin <url> [options]
 
 Lite caching proxy server
 
-Options:  
-  --host <host>   define host on which to start the server (default: "localhost")  
+Options:
+  --host <host>   define host on which to start the server (default: "localhost")
   -v, --version   output the version number
   -h, --help      display help for command
 ```
@@ -53,7 +53,7 @@ Options:
 * `get` - get cache.
   * `get *` - get all records
   * `get key` - get cache by key
-  * `get HTTP_METHOD` - get all cached responses from HTTP_METHOD requests. **Example:** `get POST` 
+  * `get HTTP_METHOD` - get all cached responses from HTTP_METHOD requests. **Example:** `get POST`
   * `get :ROUTE` - get all cached responses from the specific route. **Example:** `get :/tasks/2`
   * `get HTTP_METHOD:ROUTE` - get a specific cached response
 * `set key data` - create a new record with **key** and **data**
