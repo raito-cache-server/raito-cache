@@ -54,7 +54,6 @@ export const commands: Record<string, CommandData> = {
     description: 'Delete all cached data',
     handler: (key?: string) => {
       cacheStore.clear(key);
-      console.log(chalk.green('Cleared'));
     },
   },
   get: {

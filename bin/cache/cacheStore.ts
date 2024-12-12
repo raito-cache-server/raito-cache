@@ -1,5 +1,6 @@
 import { ICache, ICacheStore } from '../types';
 import { options } from '../cli';
+import chalk from 'chalk';
 
 export type CacheMap = Map<string, ICache>;
 
@@ -46,8 +47,17 @@ class CacheStore implements ICacheStore {
   }
 
   public clear(key?: string): void {
-    if (key) this.cacheMap.delete(key);
-    else this.cacheMap.clear();
+    if (key) {
+      if (this.cacheMap.has(key)) {
+        this.cacheMap.delete(key);
+      }
+      return console.error(
+        chalk.bold.red(`ERROR: `) + `No record by key: ${key} found`,
+      );
+    } else {
+      this.cacheMap.clear();
+      console.log(chalk.green('Cleared'));
+    }
   }
 
   private removeExpiredEntries() {
