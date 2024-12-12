@@ -107,6 +107,18 @@ export const commands: Record<string, CommandData> = {
       cacheStore.ttl(Number(key));
     },
   },
+  origin: {
+    description: `Set new origin. Args: ${chalk.bold('<url>')}`,
+    handler: (url: string) => {
+      if (URL.canParse(url)) {
+        options.origin = url;
+      } else {
+        return console.error(
+          chalk.bold.red(`ERROR: `) + `Origin url is wrong format`,
+        );
+      }
+    },
+  },
   set: {
     description: `Define a new cache record. Args: ${chalk.bold('<key>')} - cache key, ${chalk.bold('<data>')} - cache data, ${chalk.bold('<ttl>')} - cache ttl (optional)`,
     handler: (key: string, data: string, ttl?: string) => {

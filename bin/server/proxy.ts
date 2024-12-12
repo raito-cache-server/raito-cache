@@ -2,6 +2,7 @@ import { Context } from 'hono';
 import { options } from '../cli';
 import path from 'node:path';
 import { cacheResponse } from './cacheResponse';
+import chalk from 'chalk';
 
 const createRequestBody = async (c: Context): Promise<string | undefined> => {
   if (c.req.method === 'GET') return undefined;
@@ -19,12 +20,15 @@ const forwardRequest = async (url: string, method: string, body?: string) => {
 };
 
 const handleError = (c: Context, error: unknown): Response => {
-  console.error('Proxy error: ', error);
+  console.error(chalk.bold.red('PROXY ERROR: ') + error);
   c.status(500);
   return c.body('Internal Server Error');
 };
 
 export const proxy = async (c: Context) => {
+  if (!options.origin) {
+    return handleError(c, 'Origin url cannot be empty');
+  }
   const url = path.join(options.origin, c.req.path);
 
   try {
