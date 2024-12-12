@@ -11,6 +11,7 @@
 * [Getting started](#getting-started)
   * [Installation](#installation)
   * [Command Line Interface](#cli)
+* [Deployment](#deployment)
 * [Contributing](#contributing)
 * [Changelog](#changelog)
 * [Authors](#authors)
@@ -73,6 +74,34 @@ Options:
   * `get HTTP_METHOD:ROUTE` - get a specific cached response
 * `set key data ttl` - create a new record with **key** and **data**. **ttl** - time to live for record (optional)
 * `help` - get all commands
+
+## Deployment
+1. Pull docker image:
+  ```shell
+  $ docker pull stbestich/raito-cache:latest
+  ```
+2. Run it
+  ```shell
+  $ docker run -e HOST=<host> -p <port>:9180 -it stbestich/raito-cache
+  ```
+
+#### Use with docker-compose
+```yaml
+services:
+  raito-cache:
+    image: stbestich/raito-cache:latest
+    ports:
+      - "${PORT:-9180}:${PORT:-9180}"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      PORT: ${PORT:-9180}
+      HOST: ${HOST:-0.0.0.0}
+      TTL: ${TTL}
+    tty: true
+    stdin_open: true
+```
 
 ## Contributing
 
