@@ -25,10 +25,23 @@
 > [!IMPORTANT]
 > **Node.js 18.x+** version must be installed in your OS.
 
-### Installation
+#### 1. Install server
   ```shell
   $ yarn add -g raito-cache
   ```
+
+#### 2. Run the server
+  ```shell
+  $ raito --port 3000 --origin https://jsonplaceholder.typicode.com
+  ```
+
+#### 3. Send request
+  ```shell
+  $ curl http://localhost:3000/todos/1
+  {"userId":1,"id":1,"title":"delectus aut autem","completed":false}
+  ```
+  now this response is cached on the server
+  ![getAllRecordsCachedOnTheServe.png](./.github/media/getAllServer.png)
 
 ### CLI
 
