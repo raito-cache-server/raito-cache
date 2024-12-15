@@ -20,7 +20,7 @@ class CacheStore implements ICacheStore {
     if (key === '*') {
       return new Map(this.cacheMap);
     }
-    
+
     const item = this.strictGet(key);
     if (item) {
       return item;

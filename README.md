@@ -48,20 +48,22 @@
 
 **Start the server:**
 ```text
-Usage: raito --port <port> --origin <url> [options]
+Usage: raito --port <port> [options]
 
 Lite caching proxy server
 
 Options:
   --host <host>   define host on which to start the server (default: "localhost")
-  --ttl <time>    define time to live for cache in milliseconds
+  --origin <url>  define url for caching
+  --http          start a http server. Only websocket starts by default
+  --ttl <ms>      define time to live for the cache record in ms
   -v, --version   output the version number
   -h, --help      display help for command
 ```
 
-**Server commands:**
+**App commands:**
 * `status` - check server status
-* `stop` - stop the server without exiting
+* `stop` - stop the server without exiting.
 * `start` - start the server
 * `exit` - stop the server and exit the process
 * `clear-cache` - deletes all records

@@ -22,7 +22,7 @@ const forwardRequest = async (url: string, method: string, body?: string) => {
 const handleError = (c: Context, error: unknown): Response => {
   console.error(chalk.bold.red('PROXY ERROR: ') + error);
   c.status(500);
-  return c.body('Internal Server Error');
+  return c.body('Internal App Error');
 };
 
 export const proxy = async (c: Context) => {

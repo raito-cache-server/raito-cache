@@ -3,4 +3,5 @@ export interface CliOptions {
   host: string;
   origin: string;
   ttl: number;
+  http?: boolean;
 }
