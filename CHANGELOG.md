@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added:
+* WebSocket server
+* **--http** option to start http proxy server. Only websocket starts by default
 * Deployed docker image. See [README.md](README.md#deployment) for the instructions
+
+### Updated: 
+* **start** and **stop** commands updated. Now it can be chosen which one server to start or stop
 
 ## Patch 0.0.2
 ### Added:
