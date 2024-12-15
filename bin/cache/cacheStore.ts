@@ -16,14 +16,12 @@ class CacheStore implements ICacheStore {
   }
 
   public get(key?: string): ICache | CacheMap | null {
-    this.removeExpiredEntries();
-
     if (!key) return null;
     if (key === '*') {
       return new Map(this.cacheMap);
     }
-
-    const item = this.cacheMap.get(key);
+    
+    const item = this.strictGet(key);
     if (item) {
       return item;
     }
@@ -42,6 +40,16 @@ class CacheStore implements ICacheStore {
 
     if (matchedItems.length > 0) {
       return new Map(matchedItems);
+    }
+    return null;
+  }
+
+  public strictGet(key: string): ICache | null {
+    this.removeExpiredEntries();
+
+    const item = this.cacheMap.get(key);
+    if (item) {
+      return item;
     }
     return null;
   }
