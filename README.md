@@ -94,6 +94,7 @@ services:
     image: stbestich/raito-cache:latest
     ports:
       - "${PORT:-9180}:${PORT:-9180}"
+      - "${PORT:-9181}:${PORT:-9181" # Define second port if you need http proxy
     env_file:
       - .env
     environment:
