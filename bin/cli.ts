@@ -20,7 +20,7 @@ program
     'define time to live for the cache record in ms',
     parseInt,
   )
-  .version('0.0.2', '-v, --version')
+  .version('1.0.0', '-v, --version')
   .parse(process.argv);
 
 export const options: CliOptions = program.opts<CliOptions>();

@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 1.0.0
 ### Added:
 * WebSocket server
 * **--http** option to start http proxy server. Only websocket starts by default
@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Updated: 
 * **start** and **stop** commands updated. Now it can be chosen which one server to start or stop
+
+### Fixed:
+* Provided fixes for **get** and **set** commands
 
 ## Patch 0.0.2
 ### Added:

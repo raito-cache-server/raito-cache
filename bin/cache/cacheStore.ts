@@ -9,13 +9,15 @@ class CacheStore implements ICacheStore {
   private readonly cacheMap: CacheMap = new Map<string, ICache>();
 
   public set(data: ICache): void {
-    if (!data.ttl) {
+    if (!data.ttl && data.ttl !== 0) {
       data.setTtl(this.cachettl);
     }
     this.cacheMap.set(data.key, data);
   }
 
   public get(key?: string): ICache | CacheMap | null {
+    this.removeExpiredEntries();
+
     if (!key) return null;
     if (key === '*') {
       return new Map(this.cacheMap);
@@ -45,8 +47,6 @@ class CacheStore implements ICacheStore {
   }
 
   public strictGet(key: string): ICache | null {
-    this.removeExpiredEntries();
-
     const item = this.cacheMap.get(key);
     if (item) {
       return item;
@@ -58,6 +58,7 @@ class CacheStore implements ICacheStore {
     if (key) {
       if (this.cacheMap.has(key)) {
         this.cacheMap.delete(key);
+        return;
       }
       return console.error(
         chalk.bold.red(`ERROR: `) + `No record by key: ${key} found`,

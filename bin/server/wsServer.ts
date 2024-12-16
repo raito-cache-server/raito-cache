@@ -1,7 +1,6 @@
 import { WebSocket, WebSocketServer } from 'ws';
 import {
   CacheCommand,
-  WsCommand,
   WsMessage,
   WsResult,
   CliOptions,
@@ -45,8 +44,8 @@ export class WsServer implements IServer {
           },
         };
 
-        if (handler[WsCommand[command]]) {
-          handler[WsCommand[command]]();
+        if (handler[command]) {
+          handler[command]();
         } else {
           ws.send(JSON.stringify({ error: 'Unknown command' } as WsResult));
         }
@@ -73,6 +72,7 @@ export class WsServer implements IServer {
 
   private handleGet(ws: any, key: string) {
     const record = cacheStore.strictGet(key);
+    console.log(`WS: get ${key}`);
     ws.send(
       JSON.stringify({
         command: 'get',
@@ -91,13 +91,15 @@ export class WsServer implements IServer {
       return;
     }
 
-    const cacheTtl = Number(ttl);
+    const cacheTtl = ttl ? Number(ttl) : undefined;
     cacheStore.set(new Cache(key, data, cacheTtl));
+    console.log(`WS: set ${key} ${JSON.stringify(data)} ${cacheTtl}`);
     ws.send(JSON.stringify({ command: 'set', key, success: true } as WsResult));
   }
 
   private handleClearCache(ws: WebSocket, key?: string) {
     cacheStore.clear(key);
+    console.log(`WS: clear-cache ${key}`);
     ws.send(
       JSON.stringify({
         command: 'clear-cache',
