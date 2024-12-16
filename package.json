@@ -1,6 +1,6 @@
 {
   "name": "raito-cache",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Lite caching proxy server",
   "main": "dist/bin/index.js",
   "bin": {
