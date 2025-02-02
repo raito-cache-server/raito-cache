@@ -61,4 +61,4 @@ COPY --from=build /usr/src/app/dist ./dist
 EXPOSE 9180
 
 # Run the application.
-CMD yarn start:prod --port ${PORT:-9180} ${HOST:+--host $HOST} ${TTL:+--ttl $TTL}
+CMD yarn start:prod --port ${PORT:-9180} ${HOST:+--host $HOST} ${TTL:+--ttl $TTL} ${PASSWORD:+--password $PASSWORD}

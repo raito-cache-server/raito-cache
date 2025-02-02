@@ -3,6 +3,7 @@ import { CliOptions } from './types';
 import { client } from './client';
 import chalk from 'chalk';
 import { app } from './server';
+import * as bcrypt from 'bcrypt';
 
 program
   .name('raito-cache')
@@ -19,6 +20,14 @@ program
     '--ttl <ms>',
     'define time to live for the cache record in ms',
     parseInt,
+  )
+  .option(
+    '-pass, --password <password>',
+    'define a password for the server to prevent non authorized connections',
+    (value: string) => {
+      const salt = bcrypt.genSaltSync();
+      return bcrypt.hashSync(value, salt);
+    },
   )
   .version('1.0.0', '-v, --version')
   .parse(process.argv);

@@ -80,7 +80,7 @@ Options:
 ## Deployment
 1. Pull docker image:
   ```shell
-  $ docker pull stbestich/raito-cache:latest
+  $ docker pull stbestich/raito-cache:latest_amd64
   ```
 2. Run it
   ```shell
@@ -102,6 +102,7 @@ services:
       PORT: ${PORT:-9180}
       HOST: ${HOST:-0.0.0.0}
       TTL: ${TTL}
+      PASSWORD: ${PASSWORD}
     tty: true
     stdin_open: true
 ```
@@ -115,7 +116,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 Project changes are writen in changelog, see the [CHANGELOG.md](CHANGELOG.md).
 
 We use [SemVer](https://semver.org/) for versioning.
-For the versions available, see the [tags](https://github.com/stbestichhh/raito-cache/tags) on this repository.
+For the versions available, see the [tags](https://github.com/stbestichhh/raito-cache/tags) on this repository. 
 For the versions supported, see the [SECURITY.md](SECURITY.md).
 
 ## Authors

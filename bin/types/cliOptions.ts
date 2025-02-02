@@ -4,4 +4,5 @@ export interface CliOptions {
   origin: string;
   ttl: number;
   http?: boolean;
+  password?: string;
 }

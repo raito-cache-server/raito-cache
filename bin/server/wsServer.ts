@@ -7,9 +7,11 @@ import {
   IServer,
 } from '../types';
 import { Cache, cacheStore } from '../cache';
+import * as bcrypt from 'bcrypt';
 
 export class WsServer implements IServer {
   private server: WebSocketServer | null = null;
+  private authenticatedClients = new WeakMap<WebSocket, boolean>();
 
   constructor(private readonly options: CliOptions) {}
 
@@ -18,8 +20,7 @@ export class WsServer implements IServer {
       return;
     }
 
-    const port = this.options.port;
-    const host = this.options.host;
+    const { port, host, password } = this.options;
 
     this.server = new WebSocketServer({
       port,
@@ -29,10 +30,27 @@ export class WsServer implements IServer {
     this.server.on('connection', (ws) => {
       console.log('WebSocket client connected.');
 
+      this.authenticatedClients.set(ws, !password);
+
       ws.on('message', (message) => {
         const { command, args }: WsMessage = JSON.parse(message.toString());
 
-        const handler: Record<CacheCommand, () => void> = {
+        if (command === 'auth') {
+          this.handleAuth(ws, args[0]);
+          return;
+        }
+
+        if (!this.authenticatedClients.get(ws)) {
+          ws.send(
+            JSON.stringify({
+              error: 'Unauthorized. Please authenticate.',
+            } as WsResult),
+          );
+          console.log('Client authentication failed.');
+          return;
+        }
+
+        const handler: Record<Exclude<CacheCommand, 'auth'>, () => void> = {
           set: () => {
             this.handleSet(ws, ...args);
           },
@@ -53,6 +71,7 @@ export class WsServer implements IServer {
 
       ws.on('close', () => {
         console.log('WebSocket client disconnected.');
+        this.authenticatedClients.delete(ws);
       });
     });
   }
@@ -70,7 +89,30 @@ export class WsServer implements IServer {
     this.server = null;
   }
 
-  private handleGet(ws: any, key: string) {
+  private handleAuth(ws: WebSocket, password: string) {
+    const serverPassword = this.options.password;
+    const passwordsMatch = bcrypt.compareSync(
+      password,
+      this.options.password || '',
+    );
+
+    if (!serverPassword || (serverPassword && passwordsMatch)) {
+      this.authenticatedClients.set(ws, true);
+      ws.send(JSON.stringify({ command: 'auth', success: true } as WsResult));
+      console.log('Client authenticated successfully.');
+    } else {
+      ws.send(
+        JSON.stringify({
+          command: 'auth',
+          success: false,
+          error: 'Invalid password',
+        } as WsResult),
+      );
+      console.log('Client authentication failed.');
+    }
+  }
+
+  private handleGet(ws: WebSocket, key: string) {
     const record = cacheStore.strictGet(key);
     console.log(`WS: get ${key}`);
     ws.send(

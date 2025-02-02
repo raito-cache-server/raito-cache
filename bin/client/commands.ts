@@ -21,7 +21,7 @@ export const commands: Record<string, CommandData> = {
 
       console.log(
         `Server:` +
-          `\t${wsState} ${httpState}` +
+          `\t${options.password ? chalk.green('ꄗ') : ''}${wsState} ${httpState}` +
           `Host:` +
           chalk.blueBright(`\thttp://${options.host}:${options.port}\n`) +
           `Origin:` +
