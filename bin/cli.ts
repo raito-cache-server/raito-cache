@@ -15,7 +15,6 @@ program
     'localhost',
   )
   .option('--origin <url>', 'define url for caching')
-  .option('--http', `start a http server. Only websocket starts by default`)
   .option(
     '--ttl <ms>',
     'define time to live for the cache record in ms',

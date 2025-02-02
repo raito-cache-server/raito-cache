@@ -2,8 +2,7 @@ import { options } from '../cli';
 import { Cache, cacheStore } from '../cache';
 import { ICache } from '../types';
 import chalk from 'chalk';
-import { app, ServerName } from '../server';
-import { isServerName } from '../utils/isServerName';
+import { app } from '../server';
 
 export type CommandData = {
   description: string;
@@ -15,13 +14,12 @@ export const commands: Record<string, CommandData> = {
   status: {
     description: 'Check server status',
     handler: async () => {
-      const { http, ws } = app.getServersStatus();
-      const wsState = chalk[ws ? 'green' : 'red']('websocket');
-      const httpState = `${chalk[http ? 'green' : 'red']('http')}\n`;
+      const status = app.getServersStatus();
+      const wsState = chalk[status ? 'green' : 'red']('websocket');
 
       console.log(
         `Server:` +
-          `\t${options.password ? chalk.green('ꄗ') : ''}${wsState} ${httpState}` +
+          `\t${options.password ? chalk.green('ꄗ') : ''}${wsState}\n` +
           `Host:` +
           chalk.blueBright(`\thttp://${options.host}:${options.port}\n`) +
           `Origin:` +
@@ -34,31 +32,23 @@ export const commands: Record<string, CommandData> = {
     },
   },
   stop: {
-    description: `Stop the server. Args: ${chalk.bold('<server>')} - server name: ws/http (optional)`,
-    handler: async (server?: string) => {
-      if (server && !isServerName(server)) {
-        console.log(chalk.red(`Server ${server} not found`));
-      } else {
-        app.stopServers(server as ServerName);
-        console.log(chalk.red(`Stopping server...`));
-      }
+    description: `Stop the server.`,
+    handler: async () => {
+      app.stopServer();
+      console.log(chalk.red(`Stopping server...`));
     },
   },
   start: {
     description: `Start the server. Args: ${chalk.bold('<server>')} - server name: ws/http (optional)`,
-    handler: async (server?: string) => {
-      if (server && !isServerName(server)) {
-        console.log(chalk.red(`Server ${server} not found`));
-      } else {
-        await app.startServers(server as ServerName);
-        console.log(chalk.green(`Starting server...`));
-      }
+    handler: async () => {
+      await app.startServer();
+      console.log(chalk.green(`Starting server...`));
     },
   },
   exit: {
     description: 'Stop the server and terminate the process',
     handler: () => {
-      app.stopServers();
+      app.stopServer();
       console.log(chalk.yellow('App stopped. Exiting process...'));
       process.exit(0);
     },

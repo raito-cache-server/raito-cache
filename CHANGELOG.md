@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added:
 * Password protection
 
+### Removed:
+* HTTP proxy server is no longer supported and removed
+
 ## 1.0.0
 ### Added:
 * WebSocket server

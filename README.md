@@ -54,8 +54,7 @@ Lite caching proxy server
 
 Options:
   --host <host>   define host on which to start the server (default: "localhost")
-  --origin <url>  define url for caching
-  --http          start a http server. Only websocket starts by default
+  --origin <url>  define url for caching  
   --ttl <ms>      define time to live for the cache record in ms
   -v, --version   output the version number
   -h, --help      display help for command
