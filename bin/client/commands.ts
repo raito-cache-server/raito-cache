@@ -22,8 +22,6 @@ export const commands: Record<string, CommandData> = {
           `\t${options.password ? chalk.green('ꄗ') : ''}${wsState}\n` +
           `Host:` +
           chalk.blueBright(`\thttp://${options.host}:${options.port}\n`) +
-          `Origin:` +
-          chalk.cyan(`\t${options.origin}\n`) +
           `Cache:` +
           chalk.yellow(
             `\t${(cacheStore.get('*') as Map<string, ICache>).size} records`,
@@ -108,18 +106,6 @@ export const commands: Record<string, CommandData> = {
     description: `Define new ttl value the next records. Args: ${chalk.bold('<ms>')} - time to live in ms`,
     handler: (key: string) => {
       cacheStore.ttl(Number(key));
-    },
-  },
-  origin: {
-    description: `Set new origin. Args: ${chalk.bold('<url>')}`,
-    handler: (url: string) => {
-      if (URL.canParse(url)) {
-        options.origin = url;
-      } else {
-        return console.error(
-          chalk.bold.red(`ERROR: `) + `Origin url is wrong format`,
-        );
-      }
     },
   },
   set: {
