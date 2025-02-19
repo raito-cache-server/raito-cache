@@ -33,16 +33,8 @@
 
 #### 2. Run the server
   ```shell
-  $ raito --port 3000 --origin https://jsonplaceholder.typicode.com
+  $ raito --port 3000 --password raitopass
   ```
-
-#### 3. Send request
-  ```shell
-  $ curl http://localhost:3000/todos/1
-  {"userId":1,"id":1,"title":"delectus aut autem","completed":false}
-  ```
-  now this response is cached on the server
-  ![getAllRecordsCachedOnTheServe.png](./.github/media/getAllServer.png)
 
 ### CLI
 
@@ -53,11 +45,12 @@ Usage: raito --port <port> [options]
 Lite caching proxy server
 
 Options:
-  --host <host>   define host on which to start the server (default: "localhost")
-  --origin <url>  define url for caching  
-  --ttl <ms>      define time to live for the cache record in ms
-  -v, --version   output the version number
-  -h, --help      display help for command
+  --port <port>                 define port on which to start the server
+  --host <host>                 define host on which to start the server (default: "localhost")
+  --ttl <ms>                    define time to live for the cache record in ms
+  -pass, --password <password>  define a password for the server to prevent non authorized connections
+  -v, --version                 output the version number
+  -h, --help                    display help for command
 ```
 
 **App commands:**
@@ -83,7 +76,7 @@ Options:
   ```
 2. Run it
   ```shell
-  $ docker run -e HOST=<host> -p <port>:9180 -it stbestich/raito-cache
+  $ docker run -e HOST=<host> -e PASSWORD=<password> -p <port>:9180 -it stbestich/raito-cache
   ```
 
 #### Use with docker-compose
@@ -115,7 +108,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 Project changes are writen in changelog, see the [CHANGELOG.md](CHANGELOG.md).
 
 We use [SemVer](https://semver.org/) for versioning.
-For the versions available, see the [tags](https://github.com/stbestichhh/raito-cache/tags) on this repository. 
+For the versions available, see the [tags](https://github.com/stbestichhh/raito-cache/tags) on this repository.
 For the versions supported, see the [SECURITY.md](SECURITY.md).
 
 ## Authors

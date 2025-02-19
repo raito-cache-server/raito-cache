@@ -14,7 +14,6 @@ program
     'define host on which to start the server',
     'localhost',
   )
-  .option('--origin <url>', 'define url for caching')
   .option(
     '--ttl <ms>',
     'define time to live for the cache record in ms',
