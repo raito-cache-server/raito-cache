@@ -9,6 +9,8 @@ class CacheStore implements ICacheStore {
   private readonly cacheMap: CacheMap = new Map<string, ICache>();
 
   public set(data: ICache): void {
+    this.removeExpiredEntries();
+
     if (!data.ttl && data.ttl !== 0) {
       data.setTtl(this.cachettl);
     }
@@ -47,6 +49,8 @@ class CacheStore implements ICacheStore {
   }
 
   public strictGet(key: string): ICache | null {
+    this.removeExpiredEntries();
+
     const item = this.cacheMap.get(key);
     if (item) {
       return item;
@@ -55,6 +59,8 @@ class CacheStore implements ICacheStore {
   }
 
   public clear(key?: string): void {
+    this.removeExpiredEntries();
+
     if (key) {
       if (this.cacheMap.has(key)) {
         this.cacheMap.delete(key);

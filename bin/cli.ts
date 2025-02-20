@@ -27,7 +27,7 @@ program
       return bcrypt.hashSync(value, salt);
     },
   )
-  .version('1.0.0', '-v, --version')
+  .version('1.1.2', '-v, --version')
   .parse(process.argv);
 
 export const options: CliOptions = program.opts<CliOptions>();
